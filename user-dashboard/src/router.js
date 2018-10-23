@@ -22,6 +22,11 @@ const Routers = ({ history, app }) => {
       models: () => [import('./models/Products/products')],
       component: () => import('./routes/Products/Products')
     },
+    {
+      path: '/users',
+      models: () => [import('./models/Users/user')],
+      component: () => import('./routes/Users')
+    },
   ]
   return (
     <ConnectedRouter history={history}>
