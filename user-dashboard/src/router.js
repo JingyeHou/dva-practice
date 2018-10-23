@@ -1,15 +1,52 @@
 import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
-import IndexPage from './routes/IndexPage';
+import { Switch, Route, Redirect, routerRedux } from 'dva/router'
+import * as R from 'ramda';
+import dynamic from 'dva/dynamic'
+import PropTypes from 'prop-types'
 
-function RouterConfig({ history }) {
+const { ConnectedRouter } = routerRedux
+
+const Routers = ({ history, app }) => {
+  const routes = [
+    {
+      path: '/',
+      component: () => import('./routes/IndexPage')
+    },
+    {
+      path: '/count',
+      models: () => [import('./models/count')],
+      component: () => import('./routes/CountApp') 
+    },
+    {
+      path: '/product',
+      models: () => [import('./models/Products/products')],
+      component: () => import('./routes/Products/Products')
+    },
+  ]
   return (
-    <Router history={history}>
+    <ConnectedRouter history={history}>
       <Switch>
-        <Route path="/" exact component={IndexPage} />
+      {
+        R.map(({ path, ...dynamics }, key) => (
+          <Route 
+            key={key} 
+            exact
+            path={path}
+            component={dynamic({
+              app,
+              ...dynamics,
+            })}
+          />
+        ), routes)
+      }
       </Switch>
-    </Router>
+    </ConnectedRouter>
   );
 }
 
-export default RouterConfig;
+Routers.propTypes = {
+  history: PropTypes.object,
+  app: PropTypes.object,
+}
+
+export default Routers;
