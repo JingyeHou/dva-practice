@@ -1,28 +1,28 @@
 import request from '../utils/request';
 import { PAGE_SIZE } from '../constants';
 
-export function fetch({ page }) {
+export const fetch = ({ page }) => {
   return request(`/api/users?_page=${page}&_limit=${PAGE_SIZE}`);
 }
 
-export function fetchpage({ page = 1 }) {
+export const fetchpage = ({ page = 1 }) => {
   return request(`/api/users?_page=${page}&_limit=5`);
 }
 
-export function remove(id) {
+export const remove = (id) => {
   return request(`/api/users/${id}`, {
     method: 'DELETE',
   });
 }
 
-export function patch(id, values) {
+export const patch = (id, values) => {
   return request(`/api/users/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(values),
   });
 }
 
-export function create(values) {
+export const create = (values) => {
   return request('/api/users', {
     method: 'POST',
     body: JSON.stringify(values),

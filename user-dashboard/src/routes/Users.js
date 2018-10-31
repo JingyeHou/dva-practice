@@ -1,32 +1,28 @@
 import React from 'react';
 import { connect } from 'dva';
-import styles from './Users.css';
-import UsersComponent from '../components/Users/Users';
-import MainLayout from '../components/MainLayout/MainLayout';
-import * as R from 'ramda';
-import { List } from 'antd';
+import { Table, Popconfirm, Button } from "antd";
 
-const Users = ({list}) => {
+const Users = ({list, onDelete}) => {
     console.log(list)
-    return (
-      <List 
-        header={<div>Header</div>}
-        footer={<div>Footer</div>}
-        bordered
-        dataSource={list}
-        renderItem={item => (<List.Item>{item.name}</List.Item>)}
-      />
-    )
+    
+      const columns = [
+        {
+          title: "Name",
+          dataIndex: "name"
+        },
+        {
+          title: "Actions",
+          render: (text, record) => {
+            return (
+              <Popconfirm title="Delete?" onConfirm={() => onDelete(record.id)}>
+                <Button>Delete</Button>
+              </Popconfirm>
+            );
+          }
+        }
+      ];
+      return <Table dataSource={list} columns={columns} />;
 }
 
-// function Users({ location }) {
-//   return (
-//     <MainLayout location={location}>
-//       <div className={styles.normal}>
-//         <UsersComponent />
-//       </div>
-//     </MainLayout>
-//   );
-// }
 
 export default connect(({user:{list}}) => ({list}))(Users);

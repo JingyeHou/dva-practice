@@ -1,6 +1,7 @@
 export default {
     "extraBabelPlugins": [
-        [ "import", { "libraryName": "antd", "style": "css" } ]
+        [ "import", { "libraryName": "antd", "style": "css" } ],
+        ["react-intl", {"messagesDir": "./src/locales/messages"}]
       ],
      "proxy": {
           "/api": {

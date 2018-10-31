@@ -13,6 +13,14 @@ const Routers = ({ history, app }) => {
       component: () => import('./routes/IndexPage')
     },
     {
+      path: "/home",
+      component: () => import('./routes/Home')
+    },
+    {
+      path: "/carousel",
+      component: () => import('./routes/CarouselPractice')
+    },
+    {
       path: '/count',
       models: () => [import('./models/count')],
       component: () => import('./routes/CountApp') 

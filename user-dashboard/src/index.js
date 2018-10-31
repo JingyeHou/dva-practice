@@ -1,8 +1,26 @@
 import dva from 'dva';
 import { browserHistory } from 'dva/router';
 import createLoading from 'dva-loading';
-import { message } from 'antd';
+import { message, LocaleProvider } from 'antd';
+import { addLocaleData, IntlProvider } from 'react-intl';
+import ReactDOM from 'react-dom';
+import React from 'react';
 import './index.css';
+import enMessages from './locales/zh';
+import antdEn from 'antd/lib/locale-provider/en_US';
+import appLocaleData from 'react-intl/locale-data/en';
+
+window.appLocale = {
+  messages: {
+      ...enMessages,
+  },
+  antd: antdEn,
+  locale: 'en-US',
+  data: appLocaleData,
+};
+
+const appLocale = window.appLocale;
+addLocaleData(appLocale.data);
 
 const ERROR_MSG_DURATION = 3; // 3 秒
 
@@ -37,4 +55,13 @@ app.use(createLoading());
 app.router(require('./router').default);
 
 // 5. Start
-app.start('#root');
+const App = app.start();
+
+ReactDOM.render(
+  <LocaleProvider locale={appLocale.antd}>
+      <IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
+          <App />
+      </IntlProvider>
+  </LocaleProvider>,
+  document.getElementById('root')
+);
